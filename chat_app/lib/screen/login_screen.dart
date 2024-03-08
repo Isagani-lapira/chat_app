@@ -1,6 +1,7 @@
 import 'package:chat_app/utilities/const.dart';
 import 'package:chat_app/widgets/chatnow_button.dart';
 import 'package:chat_app/widgets/logo_widget.dart';
+import 'package:chat_app/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -33,38 +34,15 @@ class _LoginScreenState extends State<LoginScreen> {
               style: kTitleStyle,
               textAlign: TextAlign.center,
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 15.0),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: const TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  labelText: 'Email address',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-              ),
+            const ChatTextField(
+              label: 'Email address',
+              iconData: Icons.person,
+              isObsured: false,
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 10.0),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  labelText: 'Password',
-                  fillColor: Colors.white,
-                  filled: true,
-                  border: OutlineInputBorder(),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-              ),
+            const ChatTextField(
+              label: 'Password',
+              iconData: Icons.lock,
+              isObsured: true,
             ),
             Container(
               margin: const EdgeInsets.only(top: 10.0),
