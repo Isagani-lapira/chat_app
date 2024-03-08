@@ -1,4 +1,6 @@
+import 'package:chat_app/screen/login_screen.dart';
 import 'package:chat_app/utilities/const.dart';
+import 'package:chat_app/widgets/chatnow_button.dart';
 import 'package:chat_app/widgets/logo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,8 +18,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     //hide the bottom navigation
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(25.0),
@@ -26,20 +27,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ChatLogo(logoSize: MediaQuery.of(context).size.height * 0.5),
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                backgroundColor: const Color(0xFF5198F0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+            const Column(
+              children: [
+                Hero(
+                  tag: 'Chat_logo',
+                  child: ChatLogo(logoSize: 350),
                 ),
-              ),
-              child: const Text(
-                'Chat now!',
-                style: TextStyle(color: Colors.white),
-              ),
+                Text(
+                  'ChatRoom!',
+                  style: kTitleStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            ChatNowButton(
+              pressed: () => Navigator.pushNamed(context, LoginScreen.id),
             )
           ],
         ),
