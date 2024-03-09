@@ -3,7 +3,6 @@ import 'package:chat_app/widgets/chatnow_button.dart';
 import 'package:chat_app/widgets/logo_widget.dart';
 import 'package:chat_app/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';

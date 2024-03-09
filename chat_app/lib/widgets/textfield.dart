@@ -1,3 +1,4 @@
+import 'package:chat_app/utilities/const.dart';
 import 'package:flutter/material.dart';
 
 class ChatTextField extends StatelessWidget {
@@ -18,15 +19,9 @@ class ChatTextField extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.8,
       child: TextField(
         style: const TextStyle(fontSize: 12.0),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
+        decoration: kTextFieldStyle.copyWith(
           labelText: label,
           prefixIcon: Icon(iconData),
-          border: const OutlineInputBorder(),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
         ),
       ),
     );

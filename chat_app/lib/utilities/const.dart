@@ -16,3 +16,12 @@ const TextStyle kTitleStyle = TextStyle(
   fontSize: 32.0,
   color: Colors.white,
 );
+
+const kTextFieldStyle = InputDecoration(
+  filled: true,
+  fillColor: Colors.white,
+  border: OutlineInputBorder(),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.white),
+  ),
+);
