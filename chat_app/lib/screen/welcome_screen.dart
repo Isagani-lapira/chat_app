@@ -5,7 +5,7 @@ import 'package:chat_app/utilities/const.dart';
 import 'package:chat_app/widgets/chatnow_button.dart';
 import 'package:chat_app/widgets/logo_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
@@ -22,17 +22,18 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late bool isBuildCompleted = false;
   late AnimationController _controller;
   late Animation _animation;
+  late Future<void> _future;
+  late bool _isButtonVisible = false;
   @override
   void initState() {
     super.initState();
 
+    _future = loadAnimation();
     animationBackground();
-    //change the riv into image
-    Timer(const Duration(seconds: 4), () {
-      setState(() {
-        isBuildCompleted = true;
-      });
-    });
+  }
+
+  Future<void> loadAnimation() async {
+    await Future.delayed(const Duration(seconds: 6));
   }
 
   void animationBackground() {
@@ -44,6 +45,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       parent: _controller,
       curve: Curves.easeInQuart,
     );
+
+    _animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _isButtonVisible = true;
+        }); //show button
+      }
+    });
     _controller.forward();
     _controller.addListener(() {
       setState(() {});
@@ -74,22 +83,37 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               children: [
                 SizedBox(
                   height: 350,
-                  child: (isBuildCompleted == false)
-                      ? const RiveAnimation.asset('assets/animated_chatbot.riv')
-                      : const Hero(
-                          tag: 'Chat_logo',
-                          child: ChatLogo(logoSize: 350.0),
-                        ),
+                  child: FutureBuilder(
+                    future: _future,
+                    builder: ((context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const RiveAnimation.asset(
+                            'assets/animated_chatbot.riv');
+                      }
+                      return const Hero(
+                        tag: 'Chat_logo',
+                        child: ChatLogo(logoSize: 250),
+                      );
+                    }),
+                  ),
                 ),
-                const Text(
-                  'ChatRoom!',
+                DefaultTextStyle(
                   style: kTitleStyle,
                   textAlign: TextAlign.center,
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      ScaleAnimatedText('CHAT ROOM!'),
+                    ],
+                    repeatForever: true,
+                  ),
                 ),
               ],
             ),
-            ChatNowButton(
-              pressed: () => Navigator.pushNamed(context, LoginScreen.id),
+            Visibility(
+              visible: _isButtonVisible,
+              child: ChatNowButton(
+                pressed: () => Navigator.pushNamed(context, LoginScreen.id),
+              ),
             )
           ],
         ),

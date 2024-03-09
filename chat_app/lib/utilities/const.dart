@@ -13,7 +13,7 @@ LinearGradient kLinearGradient({double opacity = 1.0}) {
 
 const TextStyle kTitleStyle = TextStyle(
   fontFamily: 'Poppins',
-  fontSize: 32.0,
+  fontSize: 46.0,
   color: Colors.white,
 );
 
