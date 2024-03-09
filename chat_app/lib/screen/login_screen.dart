@@ -19,8 +19,8 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: kLinearGradient,
+        decoration: BoxDecoration(
+          gradient: kLinearGradient(),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
