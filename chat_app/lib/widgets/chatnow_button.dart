@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class ChatNowButton extends StatelessWidget {
+class PrimaryButton extends StatelessWidget {
   final Function pressed;
-  const ChatNowButton({super.key, required this.pressed});
+  final String label;
+  const PrimaryButton({super.key, required this.pressed, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +16,9 @@ class ChatNowButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
         ),
       ),
-      child: const Text(
-        'Chat now!',
-        style: TextStyle(color: Colors.white),
+      child: Text(
+        label,
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

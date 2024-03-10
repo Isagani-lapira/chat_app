@@ -111,7 +111,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             Visibility(
               visible: _isButtonVisible,
-              child: ChatNowButton(
+              child: PrimaryButton(
+                label: 'Chat now!',
                 pressed: () => Navigator.pushNamed(context, LoginScreen.id),
               ),
             )
