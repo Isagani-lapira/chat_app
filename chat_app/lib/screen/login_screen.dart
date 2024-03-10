@@ -1,9 +1,9 @@
+import 'package:chat_app/screen/registration_screen.dart';
 import 'package:chat_app/utilities/const.dart';
 import 'package:chat_app/widgets/chatnow_button.dart';
 import 'package:chat_app/widgets/logo_widget.dart';
 import 'package:chat_app/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -30,20 +30,35 @@ class _LoginScreenState extends State<LoginScreen> {
               style: kTitleStyle,
               textAlign: TextAlign.center,
             ),
-            const ChatTextField(
+            ChatTextField(
               label: 'Email address',
               iconData: Icons.person,
               isObsured: false,
+              onChanged: (value) {},
             ),
-            const ChatTextField(
+            ChatTextField(
               label: 'Password',
               iconData: Icons.lock,
               isObsured: true,
+              onChanged: (value) {},
             ),
             Container(
               margin: const EdgeInsets.only(top: 10.0),
               width: MediaQuery.of(context).size.width * 0.8,
-              child: ChatNowButton(pressed: () {}),
+              child: PrimaryButton(label: 'Chat now!', pressed: () {}),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RegistrationScreen.id);
+                },
+                child: const Text(
+                  'Register',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
             const SizedBox(
               height: 150.0,
