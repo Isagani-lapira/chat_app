@@ -1,4 +1,5 @@
 import 'package:chat_app/firebase_options.dart';
+import 'package:chat_app/screen/chatroom.dart';
 import 'package:chat_app/screen/login_screen.dart';
 import 'package:chat_app/screen/registration_screen.dart';
 import 'package:chat_app/screen/welcome_screen.dart';
@@ -18,11 +19,13 @@ class ChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id: (context) => const WelcomeScreen(),
         LoginScreen.id: (context) => const LoginScreen(),
         RegistrationScreen.id: (context) => const RegistrationScreen(),
+        ChatRoom.id: (context) => const ChatRoom(),
       },
     );
   }
