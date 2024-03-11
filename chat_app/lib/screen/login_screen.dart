@@ -1,8 +1,10 @@
+import 'package:chat_app/screen/chatroom.dart';
 import 'package:chat_app/screen/registration_screen.dart';
 import 'package:chat_app/utilities/const.dart';
 import 'package:chat_app/widgets/chatnow_button.dart';
 import 'package:chat_app/widgets/logo_widget.dart';
 import 'package:chat_app/widgets/textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,6 +16,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late String emailAdd;
+  late String password;
+  late final FirebaseAuth _auth;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth = FirebaseAuth.instance;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,18 +46,47 @@ class _LoginScreenState extends State<LoginScreen> {
               label: 'Email address',
               iconData: Icons.person,
               isObsured: false,
-              onChanged: (value) {},
+              onChanged: (value) {
+                emailAdd = value;
+              },
             ),
             ChatTextField(
               label: 'Password',
               iconData: Icons.lock,
               isObsured: true,
-              onChanged: (value) {},
+              onChanged: (value) {
+                password = value;
+              },
             ),
             Container(
               margin: const EdgeInsets.only(top: 10.0),
               width: MediaQuery.of(context).size.width * 0.8,
-              child: PrimaryButton(label: 'Chat now!', pressed: () {}),
+              child: PrimaryButton(
+                  label: 'Chat now!',
+                  pressed: () async {
+                    late SnackBar snackBar;
+                    String message = '';
+                    try {
+                      final credential = await _auth.signInWithEmailAndPassword(
+                          email: emailAdd, password: password);
+
+                      if (credential != null) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushNamed(context, ChatRoom.id);
+                      }
+                    } catch (e) {
+                      message = e.toString();
+                    }
+
+                    print(message);
+                    snackBar = SnackBar(
+                      content: Text(message),
+                      duration: const Duration(seconds: 3),
+                    );
+
+                    // ignore: use_build_context_synchronously
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }),
             ),
             SizedBox(
               width: double.infinity,

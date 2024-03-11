@@ -65,7 +65,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               email: emailAddress, password: password);
 
                       if (newUser != null) {
-                        print('pumasok');
+                        Navigator.pop(context);
                       } else {
                         print('ayaw parin');
                       }
