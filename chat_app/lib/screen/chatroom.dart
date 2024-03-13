@@ -1,6 +1,11 @@
-import 'package:chat_app/widgets/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../widgets/widget_bubble.dart';
+
+final db = FirebaseFirestore.instance;
 
 class ChatRoom extends StatefulWidget {
   static const String id = "chatroom.screen";
@@ -11,7 +16,16 @@ class ChatRoom extends StatefulWidget {
 }
 
 class _ChatRoomState extends State<ChatRoom> {
+  String message = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  late var currentUser;
+  final TextEditingController _controller = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    currentUser = _auth.currentUser;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,28 +53,86 @@ class _ChatRoomState extends State<ChatRoom> {
           Container(
             color: Colors.black,
           ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: StreamBuilder(
+                  stream: db
+                      .collection('messages')
+                      .orderBy('timestamp')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CupertinoActivityIndicator();
+                    }
+
+                    final data = snapshot.data?.docs.reversed;
+                    List<Widget> messages = [];
+                    for (var message in data!) {
+                      String sender = message['sender'];
+                      String text = message['text'];
+
+                      messages.add(MessageBubble(
+                        sender: sender,
+                        message: text,
+                        isSender: currentUser.email == sender,
+                      ));
+                    }
+
+                    return ListView(
+                      reverse: true,
+                      children: messages,
+                    );
+                  }),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   flex: 4,
                   child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Enter your message',
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xFF04D2FF), width: 2.0),
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter your message',
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xFF04D2FF), width: 2.0),
+                        ),
                       ),
-                    ),
-                  ),
+                      onChanged: (value) => {message = value}),
                 ),
-                IconButton(onPressed: () {}, icon: Icon(Icons.send))
+                IconButton(
+                  onPressed: () {
+                    sendMessage(message);
+                    // reset textfield
+                    _controller.clear();
+                    message = '';
+                  },
+                  icon: const Icon(Icons.send),
+                )
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  void sendMessage(String message) {
+    if (message.isNotEmpty) {
+      try {
+        db.collection('messages').add(
+          {
+            'sender': currentUser.email,
+            'text': message,
+            'timestamp': DateTime.now(),
+          },
+        );
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 }

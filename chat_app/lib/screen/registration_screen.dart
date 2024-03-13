@@ -17,7 +17,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   late String emailAddress;
   late String password;
   late FirebaseAuth _auth;
-  late bool _isLoading;
+  late bool _isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -36,7 +36,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Sign out',
+                  'Registration',
                   style: kTitleStyle,
                   textAlign: TextAlign.center,
                 ),
